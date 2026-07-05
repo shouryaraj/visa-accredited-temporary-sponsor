@@ -4,33 +4,38 @@ A web app to browse and search the Australian Government's list of Accredited Te
 
 ---
 
-## How It Works
-
-### Pipeline: PDF → JSON → Web
+## Architecture
 
 ```
 PDF (scanned image)
-  └─► extract.py          OCR each page using Tesseract
-        └─► data/sponsors_YYYY-MM-DD.json    Canonical versioned data
-              └─► NestJS API (/api/versions, /api/sponsors/:version)
-                    └─► index.html           Version selector + search + pagination
+  └─► extract.py              OCR via Tesseract, cleans noise
+        └─► public/data/
+              ├── sponsors_YYYY-MM-DD.json   versioned sponsor list
+              └── versions.json              index of all versions
+                    └─► server.js            plain Node.js static server
+                          └─► index.html     fetches JSON directly, no API layer
 ```
 
+**No API layer.** The frontend fetches JSON files directly as static assets:
+- `GET /data/versions.json` — list of available versions
+- `GET /data/sponsors_YYYY-MM-DD.json` — sponsor list for selected version
+
+`server.js` is a zero-dependency Node.js HTTP server. No framework, no build step — Railway deploys it from a 4-line Dockerfile.
+
+> `src/` contains NestJS source kept for future background pipeline work (e.g. scheduled PDF ingestion) but is not part of the serving path.
+
+---
+
+## How the Pipeline Works
+
 **Step 1 — OCR extraction** (`extract.py`)
-The PDFs released by Home Affairs are scanned images, not selectable text. The script converts each page to an image using `poppler`, then runs `tesseract` OCR on it to extract raw text line by line.
+Home Affairs PDFs are scanned images, not selectable text. The script converts each page to an image via `poppler`, then runs `tesseract` OCR line by line.
 
 **Step 2 — Cleaning**
-Raw OCR output contains noise: page numbers, header fragments, smart-quote artifacts. The script strips these using regex rules and deduplicates entries case-insensitively.
+Raw OCR output has noise: page numbers, header fragments, smart-quote artifacts. Stripped using regex rules, deduplicated case-insensitively.
 
-**Step 3 — Save as JSON**
-Each version is saved as a structured JSON file in `data/` with metadata (version date, FOI reference, source attribution, license).
-
-**Step 4 — Serve via NestJS**
-The API reads JSON files from `data/` at runtime:
-- `GET /api/versions` — lists all available versions with metadata
-- `GET /api/sponsors/:version` — returns the full sponsor list for that version
-
-The frontend fetches these endpoints and renders a paginated, searchable table.
+**Step 3 — Save JSON**
+Each version is saved as `public/data/sponsors_YYYY-MM-DD.json` with metadata (FOI reference, license, source). `versions.json` is regenerated to index all available versions.
 
 ---
 
@@ -38,58 +43,48 @@ The frontend fetches these endpoints and renders a paginated, searchable table.
 
 When a new PDF is released by Home Affairs:
 
-**1. Download the PDF**
-Get the latest FOI release from the Home Affairs FOI disclosure log.
-
-**2. Run the pipeline**
+**1. Run the pipeline**
 ```bash
 python3 extract.py ~/Downloads/"Accredited Sponsors List Jul 2025.pdf"
 ```
 
-The script auto-detects the date from the filename. If it can't, pass it manually:
+Date is auto-detected from the filename. Override if needed:
 ```bash
 python3 extract.py ~/Downloads/sponsors.pdf --date 2025-07-01 --foi "FA 25/07/00001"
 ```
 
-Options:
 | Flag | Default | Description |
 |---|---|---|
 | `--date` | auto from filename | Version date `YYYY-MM-DD` |
 | `--foi` | *(empty)* | FOI reference printed on the document |
-| `--dpi` | `150` | OCR resolution — increase to `200` for better accuracy on low-quality scans |
-| `--output` | `./data` | Output directory |
+| `--dpi` | `150` | OCR resolution — raise to `200` for low-quality scans |
+| `--output` | `./public/data` | Output directory |
 
-**3. Rebuild and restart**
+**2. Commit and push**
 ```bash
-npm run build
-npm run start:prod
+git add public/data/
+git commit -m "Add July 2025 sponsor list"
+git push
 ```
 
-The new version appears automatically in the version dropdown — no code changes needed.
+Railway redeploys automatically. The new version appears in the dropdown — no code changes needed.
 
 ---
 
 ## Running Locally
 
-**Prerequisites**
+**Prerequisites (for extract.py)**
 ```bash
 brew install poppler tesseract
 pip3 install pdf2image pytesseract Pillow
-npm install
 ```
 
 **Start the server**
 ```bash
-npm run build
-npm run start:prod
+node server.js
 ```
 
 Open [http://localhost:3000](http://localhost:3000).
-
-For development with auto-reload:
-```bash
-npm run start:dev
-```
 
 ---
 
@@ -97,22 +92,36 @@ npm run start:dev
 
 ```
 visa-list/
-├── extract.py                    # Pipeline: PDF → JSON
-├── src/
-│   ├── main.ts                   # NestJS bootstrap, serves static files on :3000
+├── extract.py                     # Pipeline: PDF → public/data/
+├── server.js                      # Zero-dependency static file server
+├── public/
+│   ├── index.html                 # Frontend — version selector, search, pagination
+│   └── data/
+│       ├── versions.json          # Auto-generated index of all versions
+│       └── sponsors_YYYY-MM-DD.json  # One file per FOI release
+├── src/                           # NestJS (future background pipeline)
+│   ├── main.ts
 │   ├── app.module.ts
 │   └── sponsors/
-│       ├── sponsors.controller.ts  # API route handlers
-│       ├── sponsors.service.ts     # Reads JSON from data/
-│       ├── sponsors.module.ts
-│       └── sponsors.types.ts       # Shared TypeScript interfaces
-├── public/
-│   └── index.html                # Frontend — version selector, search, pagination
-├── data/
-│   └── sponsors_YYYY-MM-DD.json  # One file per version (add more by running extract.py)
-├── package.json
-└── tsconfig.json
+├── Dockerfile                     # node:20-alpine, copy + run — no build step
+├── railway.toml
+└── package.json
 ```
+
+---
+
+## Deployment (Railway)
+
+Dockerfile is intentionally minimal — no build step, no npm install:
+
+```dockerfile
+FROM node:20-alpine
+COPY server.js ./
+COPY public/ ./public/
+CMD ["node", "server.js"]
+```
+
+Push to GitHub → Railway auto-deploys. To add a new sponsor version: run `extract.py`, commit `public/data/`, push.
 
 ---
 
