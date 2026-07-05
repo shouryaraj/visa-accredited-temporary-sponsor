@@ -5,4 +5,11 @@ dist/
 __pycache__/
 *.pyc
 
+# Environment & secrets
+.env
+.env.*
+
+# Claude Code
+.claude/
+
 .DS_Store
