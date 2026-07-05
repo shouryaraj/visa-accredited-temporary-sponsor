@@ -7,7 +7,8 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.setGlobalPrefix('api');
   app.useStaticAssets(join(process.cwd(), 'public'));
-  await app.listen(3000);
-  console.log('Sponsor viewer running → http://localhost:3000');
+  const port = process.env.PORT || 3000;
+  await app.listen(port, '0.0.0.0');
+  console.log(`Sponsor viewer running → http://localhost:${port}`);
 }
 bootstrap();

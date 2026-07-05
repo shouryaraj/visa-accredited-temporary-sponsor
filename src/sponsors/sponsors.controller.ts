@@ -6,6 +6,11 @@ import { SponsorFile, VersionMeta } from './sponsors.types';
 export class SponsorsController {
   constructor(private readonly sponsorsService: SponsorsService) {}
 
+  @Get('health')
+  health() {
+    return { status: 'ok' };
+  }
+
   @Get('versions')
   getVersions(): Promise<VersionMeta[]> {
     return this.sponsorsService.getVersions();
