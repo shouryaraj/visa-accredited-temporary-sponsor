@@ -12,7 +12,7 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci --omit=dev
 
-# ── Build ─────────────────────────────────────────────
+# ── Build (includes health endpoint) ─────────────────
 FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
