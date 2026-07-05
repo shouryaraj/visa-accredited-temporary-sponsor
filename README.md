@@ -116,6 +116,28 @@ visa-list/
 
 ---
 
+## Deploying to Railway
+
+The setup mirrors the `badminton-rotation` project — same Dockerfile strategy, same `railway.toml` structure.
+
+**First deploy**
+1. Push the repo to GitHub
+2. Create a new project on [railway.app](https://railway.app) → Deploy from GitHub repo
+3. Railway picks up `railway.toml` automatically and builds via Dockerfile
+
+**Adding a new sponsor version**
+```bash
+python3 extract.py ~/Downloads/"Accredited Sponsors List Jul 2025.pdf"
+git add data/sponsors_2025-07-01.json
+git commit -m "Add July 2025 sponsor list"
+git push
+```
+Railway redeploys automatically. The new version appears in the dropdown.
+
+**No database required** — unlike `badminton-rotation` which uses MongoDB, all data here is JSON files committed to git and baked into the Docker image at build time.
+
+---
+
 ## Data & Compliance
 
 - **Source**: Department of Home Affairs, released under the *Freedom of Information Act 1982 (Cth)*
