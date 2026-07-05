@@ -1,6 +1,6 @@
-# Accredited Sponsors Viewer
+# Visa Sponsor Search
 
-A web app to browse and search the Australian Government's list of Accredited Temporary Resident (Skilled Employment) Sponsors, released via FOI by the Department of Home Affairs.
+A web app to browse and search the list of Accredited Temporary Resident (Skilled Employment) Sponsors — sourced from public FOI releases.
 
 ---
 

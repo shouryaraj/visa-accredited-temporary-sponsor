@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Accredited Sponsors – Home Affairs FOI</title>
+  <title>Visa Sponsor Search</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -345,8 +345,8 @@
 <!-- Header -->
 <header>
   <div class="header-inner">
-    <div class="header-sub">Australian Government · Department of Home Affairs · FOI Disclosure</div>
-    <h1>Accredited Temporary Resident (Skilled Employment) Sponsors</h1>
+    <div class="header-sub">Temporary Resident (Skilled Employment) · Public FOI Data · For reference only</div>
+    <h1>Visa Sponsor Search</h1>
   </div>
 </header>
 
@@ -399,8 +399,8 @@
 <!-- Footer -->
 <footer>
   <div class="footer-inner">
-    <span>Data © Commonwealth of Australia · CC BY 4.0 · Source: Department of Home Affairs (FOI) · Freedom of Information Act 1982 (Cth)</span>
-    <span>For reference only · Verify current status with homeaffairs.gov.au</span>
+    <span>Data © Commonwealth of Australia · CC BY 4.0 · Freedom of Information Act 1982 (Cth)</span>
+    <span>For reference only · Not affiliated with the Australian Government</span>
   </div>
 </footer>
 
@@ -543,7 +543,7 @@
         `<span>·</span>` +
         `<span>FOI <strong>${esc(d.source?.foi_reference || '—')}</strong></span>` +
         `<span>·</span>` +
-        `<span>Department of Home Affairs</span>`;
+        `<span>Public FOI release</span>`;
 
     } catch (err) {
       tbody.innerHTML = `<tr><td colspan="2"><div class="state-box">

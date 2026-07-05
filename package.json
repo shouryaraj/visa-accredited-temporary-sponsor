@@ -1,7 +1,7 @@
 {
   "name": "visa-list",
   "version": "1.0.0",
-  "description": "Accredited Temporary Resident Sponsors viewer",
+  "description": "Search and browse accredited skilled employment visa sponsors",
   "scripts": {
     "build": "nest build",
     "start": "nest start",
