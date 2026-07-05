@@ -193,6 +193,32 @@ def save_version_json(sponsors, version_date, foi_ref, output_dir):
 
 
 # ---------------------------------------------------------------------------
+# Step 4b: Rebuild versions.json (loaded directly by the frontend)
+# ---------------------------------------------------------------------------
+
+def rebuild_versions_json(output_dir):
+    output_dir = Path(output_dir)
+    json_files = sorted(output_dir.glob('sponsors_*.json'), reverse=True)
+
+    versions = []
+    for jf in json_files:
+        with open(jf, encoding='utf-8') as f:
+            d = json.load(f)
+        versions.append({
+            "date": d['version'],
+            "label": d.get('label', format_label(d['version'])),
+            "foi":   d['source'].get('foi_reference', ''),
+            "total": d['total'],
+        })
+
+    out = output_dir / 'versions.json'
+    with open(out, 'w', encoding='utf-8') as f:
+        json.dump(versions, f, indent=2, ensure_ascii=False)
+
+    print(f"  Updated: {out}  ({len(versions)} version(s))")
+
+
+# ---------------------------------------------------------------------------
 # CLI entry point
 # ---------------------------------------------------------------------------
 
@@ -204,7 +230,7 @@ def main():
     parser.add_argument('--date', help='Version date YYYY-MM-DD (auto-detected if omitted)')
     parser.add_argument('--foi', default='', help='FOI reference on the document')
     parser.add_argument('--dpi', type=int, default=150, help='OCR DPI (default: 150)')
-    parser.add_argument('--output', default='data', help='Output directory (default: ./data)')
+    parser.add_argument('--output', default='public/data', help='Output directory (default: ./public/data)')
     args = parser.parse_args()
 
     pdf_path = Path(args.pdf_path).expanduser().resolve()
@@ -235,8 +261,9 @@ def main():
 
     print("\nStep 3/3 — Saving")
     save_version_json(sponsors, version_date, args.foi, args.output)
+    rebuild_versions_json(args.output)
 
-    print(f"\nDone. Restart the server and the new version will appear in the dropdown.")
+    print(f"\nDone. Commit public/data/ and redeploy — the new version appears in the dropdown.")
 
 
 if __name__ == '__main__':

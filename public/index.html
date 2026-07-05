@@ -525,7 +525,7 @@
     searchEl.disabled = true;
 
     try {
-      const res = await fetch(`/api/sponsors/${date}`);
+      const res = await fetch(`/data/sponsors_${date}.json`);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const d = await res.json();
 
@@ -553,7 +553,7 @@
 
   async function init() {
     try {
-      const res = await fetch('/api/versions');
+      const res = await fetch('/data/versions.json');
       const versions = await res.json();
 
       vselect.innerHTML = versions.map(v =>
