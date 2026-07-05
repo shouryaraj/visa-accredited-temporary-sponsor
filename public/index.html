@@ -453,7 +453,9 @@
       `<tr><td class="td-num">${start + i + 1}</td><td>${highlight(name, query)}</td></tr>`
     ).join('');
 
-    countTag.innerHTML = `<strong>${filtered.length}</strong> of ${allSponsors.length} sponsors`;
+    countTag.innerHTML = query
+      ? `<strong>${filtered.length}</strong> of ${allSponsors.length} sponsors`
+      : `<strong>${allSponsors.length}</strong> sponsors`;
 
     renderPagination(tp);
     pagination.style.display = 'flex';
