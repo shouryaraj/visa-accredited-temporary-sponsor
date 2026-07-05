@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accredited Sponsors – Home Affairs FOI</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #0d1f3c;
+      --navy2: #162b52;
+      --blue: #1d4ed8;
+      --blue-light: #eff6ff;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --bg: #f8fafc;
+      --white: #ffffff;
+      --radius: 8px;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Header ── */
+    header {
+      background: var(--navy);
+      color: #fff;
+      padding: 0 32px;
+    }
+
+    .header-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 20px 0 16px;
+    }
+
+    .header-sub {
+      font-size: 0.75rem;
+      color: #94a3b8;
+      margin-bottom: 6px;
+      letter-spacing: 0.03em;
+    }
+
+    header h1 {
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    /* ── Toolbar ── */
+    .toolbar {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 0 32px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      box-shadow: 0 1px 3px rgba(0,0,0,.06);
+    }
+
+    .toolbar-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+      flex-wrap: wrap;
+    }
+
+    .version-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .version-wrap label {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    #version-select {
+      appearance: none;
+      background: var(--bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 10px center;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 7px 30px 7px 11px;
+      font-size: 0.87rem;
+      font-weight: 500;
+      color: var(--text);
+      cursor: pointer;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    #version-select:focus { border-color: var(--blue); }
+
+    .divider { width: 1px; height: 26px; background: var(--border); flex-shrink: 0; }
+
+    .search-wrap {
+      position: relative;
+      flex: 1 1 240px;
+      max-width: 440px;
+    }
+
+    .search-wrap svg {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      pointer-events: none;
+    }
+
+    #search {
+      width: 100%;
+      padding: 8px 34px 8px 34px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      background: var(--bg);
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    #search:focus { border-color: var(--blue); background: #fff; }
+
+    #clear-btn {
+      display: none;
+      position: absolute;
+      right: 9px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1;
+      padding: 2px 4px;
+    }
+
+    #clear-btn:hover { color: var(--text); }
+
+    .count-tag {
+      font-size: 0.82rem;
+      color: var(--muted);
+      white-space: nowrap;
+      margin-left: auto;
+    }
+
+    .count-tag strong { color: var(--blue); }
+
+    /* ── Content ── */
+    .content {
+      flex: 1;
+      padding: 20px 32px 32px;
+    }
+
+    .content-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .meta-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      font-size: 0.79rem;
+      color: var(--muted);
+    }
+
+    .meta-bar a { color: var(--blue); text-decoration: none; }
+    .meta-bar a:hover { text-decoration: underline; }
+
+    .table-wrap {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,.05);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    thead tr { background: var(--navy); color: #fff; }
+
+    thead th {
+      padding: 11px 18px;
+      text-align: left;
+      font-weight: 500;
+      font-size: 0.77rem;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    #th-name { cursor: pointer; }
+    #th-name:hover { background: var(--navy2); }
+
+    .th-num { width: 60px; text-align: right; }
+    .sort-icon { margin-left: 4px; opacity: 0.55; }
+
+    tbody tr { border-bottom: 1px solid var(--border); }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: var(--blue-light); }
+    tbody td { padding: 10px 18px; vertical-align: middle; }
+
+    .td-num {
+      color: #cbd5e1;
+      font-size: 0.78rem;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    mark { background: #fde68a; border-radius: 2px; padding: 0 1px; }
+
+    /* ── Pagination ── */
+    .pagination {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 16px 18px;
+      border-top: 1px solid var(--border);
+      background: var(--white);
+    }
+
+    .pg-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 6px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--white);
+      font-size: 0.83rem;
+      font-weight: 500;
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .pg-btn:hover:not(:disabled) { border-color: var(--blue); color: var(--blue); }
+    .pg-btn:disabled { opacity: 0.38; cursor: default; }
+
+    .pg-info {
+      font-size: 0.83rem;
+      color: var(--muted);
+      padding: 0 10px;
+    }
+
+    .pg-info strong { color: var(--text); }
+
+    .pg-numbers {
+      display: flex;
+      gap: 3px;
+    }
+
+    .pg-num {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      font-size: 0.83rem;
+      cursor: pointer;
+      border: 1.5px solid transparent;
+      color: var(--muted);
+      transition: all 0.15s;
+    }
+
+    .pg-num:hover { background: var(--blue-light); color: var(--blue); }
+    .pg-num.active { background: var(--blue); color: #fff; border-color: var(--blue); font-weight: 600; }
+    .pg-ellipsis { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 0.83rem; }
+
+    /* ── Skeleton / Empty ── */
+    .state-box {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--muted);
+    }
+
+    .state-box strong { display: block; font-size: 1rem; color: #475569; margin-bottom: 6px; }
+
+    .skel {
+      display: inline-block;
+      height: 13px;
+      border-radius: 6px;
+      background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.2s infinite;
+    }
+
+    @keyframes shimmer {
+      0%   { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* ── Footer ── */
+    footer {
+      background: var(--navy);
+      color: #64748b;
+      padding: 14px 32px;
+      font-size: 0.76rem;
+    }
+
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+
+    @media (max-width: 640px) {
+      header, .toolbar, .content, footer { padding-left: 16px; padding-right: 16px; }
+      .header-inner, .toolbar-inner, .content-inner { padding-left: 0; padding-right: 0; }
+      .footer-inner { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  <div class="header-inner">
+    <div class="header-sub">Australian Government · Department of Home Affairs · FOI Disclosure</div>
+    <h1>Accredited Temporary Resident (Skilled Employment) Sponsors</h1>
+  </div>
+</header>
+
+<!-- Toolbar -->
+<div class="toolbar">
+  <div class="toolbar-inner">
+    <div class="version-wrap">
+      <label for="version-select">Version</label>
+      <select id="version-select"><option>Loading…</option></select>
+    </div>
+    <div class="divider"></div>
+    <div class="search-wrap">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input type="text" id="search" placeholder="Search by name…" autocomplete="off" spellcheck="false" disabled>
+      <button id="clear-btn" title="Clear">✕</button>
+    </div>
+    <div class="count-tag" id="count-tag"></div>
+  </div>
+</div>
+
+<!-- Content -->
+<div class="content">
+  <div class="content-inner">
+    <div class="meta-bar" id="meta-bar"></div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th class="th-num">#</th>
+            <th id="th-name" onclick="toggleSort()">
+              Organisation Name <span class="sort-icon" id="sort-icon">↑</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+          <tr><td></td><td><span class="skel" style="width:55%"></span></td></tr>
+          <tr><td></td><td><span class="skel" style="width:70%"></span></td></tr>
+          <tr><td></td><td><span class="skel" style="width:42%"></span></td></tr>
+          <tr><td></td><td><span class="skel" style="width:63%"></span></td></tr>
+          <tr><td></td><td><span class="skel" style="width:50%"></span></td></tr>
+        </tbody>
+      </table>
+      <div class="pagination" id="pagination" style="display:none"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-inner">
+    <span>Data © Commonwealth of Australia · CC BY 4.0 · Source: Department of Home Affairs (FOI) · Freedom of Information Act 1982 (Cth)</span>
+    <span>For reference only · Verify current status with homeaffairs.gov.au</span>
+  </div>
+</footer>
+
+<script>
+  const PAGE_SIZE = 50;
+
+  const esc = (s) => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+  function highlight(text, q) {
+    if (!q) return esc(text);
+    const i = text.toLowerCase().indexOf(q.toLowerCase());
+    if (i === -1) return esc(text);
+    return esc(text.slice(0, i)) + '<mark>' + esc(text.slice(i, i + q.length)) + '</mark>' + esc(text.slice(i + q.length));
+  }
+
+  let allSponsors = [];
+  let filtered    = [];
+  let query       = '';
+  let sortAsc     = true;
+  let page        = 1;
+
+  const tbody      = document.getElementById('tbody');
+  const pagination = document.getElementById('pagination');
+  const searchEl   = document.getElementById('search');
+  const clearBtn   = document.getElementById('clear-btn');
+  const countTag   = document.getElementById('count-tag');
+  const metaBar    = document.getElementById('meta-bar');
+  const sortIcon   = document.getElementById('sort-icon');
+  const vselect    = document.getElementById('version-select');
+
+  function totalPages() { return Math.max(1, Math.ceil(filtered.length / PAGE_SIZE)); }
+
+  function render() {
+    if (!filtered.length) {
+      tbody.innerHTML = `<tr><td colspan="2"><div class="state-box">
+        <strong>${query ? 'No results' : 'No data'}</strong>
+        <span>${query ? `Nothing matches "<em>${esc(query)}</em>"` : 'Select a version above.'}</span>
+      </div></td></tr>`;
+      countTag.innerHTML = '';
+      pagination.style.display = 'none';
+      return;
+    }
+
+    const tp    = totalPages();
+    page        = Math.min(page, tp);
+    const start = (page - 1) * PAGE_SIZE;
+    const slice = filtered.slice(start, start + PAGE_SIZE);
+
+    tbody.innerHTML = slice.map((name, i) =>
+      `<tr><td class="td-num">${start + i + 1}</td><td>${highlight(name, query)}</td></tr>`
+    ).join('');
+
+    countTag.innerHTML = `<strong>${filtered.length}</strong> of ${allSponsors.length} sponsors`;
+
+    renderPagination(tp);
+    pagination.style.display = 'flex';
+  }
+
+  function renderPagination(tp) {
+    if (tp <= 1) { pagination.style.display = 'none'; return; }
+
+    const pages = pageRange(page, tp);
+    pagination.innerHTML =
+      `<button class="pg-btn" onclick="goPage(${page - 1})" ${page === 1 ? 'disabled' : ''}>← Prev</button>` +
+      `<div class="pg-numbers">` +
+      pages.map(p =>
+        p === '…'
+          ? `<span class="pg-ellipsis">…</span>`
+          : `<span class="pg-num ${p === page ? 'active' : ''}" onclick="goPage(${p})">${p}</span>`
+      ).join('') +
+      `</div>` +
+      `<button class="pg-btn" onclick="goPage(${page + 1})" ${page === tp ? 'disabled' : ''}>Next →</button>`;
+  }
+
+  function pageRange(cur, total) {
+    if (total <= 7) return Array.from({length: total}, (_, i) => i + 1);
+    if (cur <= 4)   return [1, 2, 3, 4, 5, '…', total];
+    if (cur >= total - 3) return [1, '…', total-4, total-3, total-2, total-1, total];
+    return [1, '…', cur-1, cur, cur+1, '…', total];
+  }
+
+  function goPage(p) {
+    page = p;
+    render();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function applyFilter() {
+    const q = query.toLowerCase();
+    filtered = q ? allSponsors.filter(n => n.toLowerCase().includes(q)) : [...allSponsors];
+    if (!sortAsc) filtered.reverse();
+    page = 1;
+    render();
+  }
+
+  function toggleSort() {
+    sortAsc = !sortAsc;
+    sortIcon.textContent = sortAsc ? '↑' : '↓';
+    filtered.reverse();
+    render();
+  }
+
+  searchEl.addEventListener('input', () => {
+    query = searchEl.value;
+    clearBtn.style.display = query ? 'block' : 'none';
+    applyFilter();
+  });
+
+  clearBtn.addEventListener('click', () => {
+    searchEl.value = query = '';
+    clearBtn.style.display = 'none';
+    applyFilter();
+    searchEl.focus();
+  });
+
+  async function loadVersion(date) {
+    tbody.innerHTML = [55,70,40,63,50,48,68,38].map(w =>
+      `<tr><td></td><td><span class="skel" style="width:${w}%"></span></td></tr>`
+    ).join('');
+    pagination.style.display = 'none';
+    countTag.innerHTML = '';
+    searchEl.disabled = true;
+
+    try {
+      const res = await fetch(`/api/sponsors/${date}`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const d = await res.json();
+
+      allSponsors = [...d.sponsors];
+      if (!sortAsc) allSponsors.reverse();
+      query = searchEl.value;
+      page  = 1;
+      applyFilter();
+      searchEl.disabled = false;
+
+      metaBar.innerHTML =
+        `<span>As at <strong>${esc(d.label)}</strong></span>` +
+        `<span>·</span>` +
+        `<span>FOI <strong>${esc(d.source?.foi_reference || '—')}</strong></span>` +
+        `<span>·</span>` +
+        `<span>Department of Home Affairs</span>`;
+
+    } catch (err) {
+      tbody.innerHTML = `<tr><td colspan="2"><div class="state-box">
+        <strong style="color:#dc2626">Failed to load</strong>
+        <span>${esc(err.message)}</span>
+      </div></td></tr>`;
+    }
+  }
+
+  async function init() {
+    try {
+      const res = await fetch('/api/versions');
+      const versions = await res.json();
+
+      vselect.innerHTML = versions.map(v =>
+        `<option value="${esc(v.date)}">${esc(v.label)} (${v.total.toLocaleString()})</option>`
+      ).join('');
+
+      vselect.addEventListener('change', () => loadVersion(vselect.value));
+
+      if (versions.length) loadVersion(versions[0].date);
+    } catch {
+      vselect.innerHTML = '<option>Error loading versions</option>';
+    }
+  }
+
+  init();
+</script>
+</body>
+</html>
